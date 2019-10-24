@@ -1,0 +1,1 @@
+../NMT/local-settings.sh

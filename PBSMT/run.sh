@@ -1,11 +1,26 @@
+#!/bin/bash
+
 # Copyright (c) 2018-present, Facebook, Inc.
 # All rights reserved.
 #
 # This source code is licensed under the license found in the
 # LICENSE file in the root directory of this source tree.
 #
+# Edited by Kelly Marchisio for use on the CLSP Grid, Oct 2019.
 
 set -e
+
+. ./local-settings.sh
+
+stage=$1
+echo $stage
+if ! [[ -n "$stage" ]]
+then
+	echo 'Please set an experiment number (stage)'
+	exit
+else
+	echo 'Running experiment #' $stage
+fi
 
 #
 # Data preprocessing configuration
@@ -35,7 +50,9 @@ mkdir -p $PARA_PATH
 mkdir -p $EMB_PATH
 
 # moses
-MOSES_PATH=/private/home/guismay/tools/mosesdecoder  # PATH_WHERE_YOU_INSTALLED_MOSES
+MOSES_PATH=$MOSES_PATH
+# MOSES_PATH=/home/kmarc/experiment/unsup/UnsupervisedMT/PBSMT/tools/mosesdecoder
+echo 'MOSES_PATH: ' $MOSES_PATH
 TOKENIZER=$MOSES_PATH/scripts/tokenizer/tokenizer.perl
 NORM_PUNC=$MOSES_PATH/scripts/tokenizer/normalize-punctuation.perl
 INPUT_FROM_SGM=$MOSES_PATH/scripts/ems/support/input-from-sgm.perl
@@ -47,9 +64,6 @@ TRAIN_LM=$MOSES_PATH/bin/lmplz
 TRAIN_MODEL=$MOSES_PATH/scripts/training/train-model.perl
 MULTIBLEU=$MOSES_PATH/scripts/generic/multi-bleu.perl
 MOSES_BIN=$MOSES_PATH/bin/moses
-
-# training directory
-TRAIN_DIR=$PWD/moses_train_$SRC-$TGT
 
 # MUSE path
 MUSE_PATH=$PWD/MUSE
@@ -72,6 +86,12 @@ TGT_LM_ARPA=$DATA_PATH/$TGT.lm.arpa
 SRC_LM_BLM=$DATA_PATH/$SRC.lm.blm
 TGT_LM_BLM=$DATA_PATH/$TGT.lm.blm
 
+#
+# Experimental Setup.
+#
+EXP_ID=$stage
+# training directory
+TRAIN_DIR=$PWD/moses_train_$SRC-$TGT/$EXP_ID
 
 #
 # Download and install tools
@@ -100,7 +120,12 @@ if [ ! -d "$MUSE_PATH" ]; then
   echo "Cloning MUSE from GitHub repository..."
   git clone https://github.com/facebookresearch/MUSE.git
   cd $MUSE_PATH/data/
-  ./get_evaluation.sh
+  ## Kelly - Originally in this file.
+  ## ./get_evaluation.sh
+  ## End - Originally in this file.
+  wget https://dl.fbaipublicfiles.com/arrival/vectors.tar.gz
+  wget https://dl.fbaipublicfiles.com/arrival/wordsim.tar.gz
+  wget https://dl.fbaipublicfiles.com/arrival/dictionaries.tar.gz
 fi
 echo "MUSE found in: $MUSE_PATH"
 
@@ -145,10 +170,10 @@ echo "Pretrained $TGT embeddings found in: $EMB_TGT"
 cd $MONO_PATH
 
 echo "Downloading English files..."
-wget -c http://www.statmt.org/wmt14/training-monolingual-news-crawl/news.2007.en.shuffled.gz
-wget -c http://www.statmt.org/wmt14/training-monolingual-news-crawl/news.2008.en.shuffled.gz
-wget -c http://www.statmt.org/wmt14/training-monolingual-news-crawl/news.2009.en.shuffled.gz
-wget -c http://www.statmt.org/wmt14/training-monolingual-news-crawl/news.2010.en.shuffled.gz
+# wget -c http://www.statmt.org/wmt14/training-monolingual-news-crawl/news.2007.en.shuffled.gz
+# wget -c http://www.statmt.org/wmt14/training-monolingual-news-crawl/news.2008.en.shuffled.gz
+# wget -c http://www.statmt.org/wmt14/training-monolingual-news-crawl/news.2009.en.shuffled.gz
+# wget -c http://www.statmt.org/wmt14/training-monolingual-news-crawl/news.2010.en.shuffled.gz
 # wget -c http://www.statmt.org/wmt14/training-monolingual-news-crawl/news.2011.en.shuffled.gz
 # wget -c http://www.statmt.org/wmt14/training-monolingual-news-crawl/news.2012.en.shuffled.gz
 # wget -c http://www.statmt.org/wmt14/training-monolingual-news-crawl/news.2013.en.shuffled.gz
@@ -158,11 +183,11 @@ wget -c http://www.statmt.org/wmt14/training-monolingual-news-crawl/news.2010.en
 # wget -c http://data.statmt.org/wmt18/translation-task/news.2017.en.shuffled.deduped.gz
 
 echo "Downloading French files..."
-wget -c http://www.statmt.org/wmt14/training-monolingual-news-crawl/news.2007.fr.shuffled.gz
-wget -c http://www.statmt.org/wmt14/training-monolingual-news-crawl/news.2008.fr.shuffled.gz
-wget -c http://www.statmt.org/wmt14/training-monolingual-news-crawl/news.2009.fr.shuffled.gz
-wget -c http://www.statmt.org/wmt14/training-monolingual-news-crawl/news.2010.fr.shuffled.gz
-# wget -c http://www.statmt.org/wmt14/training-monolingual-news-crawl/news.2011.fr.shuffled.gz
+# wget -c http://www.statmt.org/wmt14/training-monolingual-news-crawl/news.2007.fr.shuffled.gz
+# wget -c http://www.statmt.org/wmt14/training-monolingual-news-crawl/news.2008.fr.shuffled.gz
+# wget -c http://www.statmt.org/wmt14/training-monolingual-news-crawl/news.2009.fr.shuffled.gz
+# wget -c http://www.statmt.org/wmt14/training-monolingual-news-crawl/news.2010.fr.shuffled.gz
+# # wget -c http://www.statmt.org/wmt14/training-monolingual-news-crawl/news.2011.fr.shuffled.gz
 # wget -c http://www.statmt.org/wmt14/training-monolingual-news-crawl/news.2012.fr.shuffled.gz
 # wget -c http://www.statmt.org/wmt14/training-monolingual-news-crawl/news.2013.fr.shuffled.gz
 # wget -c http://www.statmt.org/wmt15/training-monolingual-news-crawl-v2/news.2014.fr.shuffled.v2.gz
@@ -190,9 +215,9 @@ fi
 echo "$SRC monolingual data concatenated in: $SRC_RAW"
 echo "$TGT monolingual data concatenated in: $TGT_RAW"
 
-# check number of lines
-if ! [[ "$(wc -l < $SRC_RAW)" -eq "$N_MONO" ]]; then echo "ERROR: Number of lines doesn't match! Be sure you have $N_MONO sentences in your $SRC monolingual data."; exit; fi
-if ! [[ "$(wc -l < $TGT_RAW)" -eq "$N_MONO" ]]; then echo "ERROR: Number of lines doesn't match! Be sure you have $N_MONO sentences in your $TGT monolingual data."; exit; fi
+## # check number of lines
+## if ! [[ "$(wc -l < $SRC_RAW)" -eq "$N_MONO" ]]; then echo "ERROR: Number of lines doesn't match! Be sure you have $N_MONO sentences in your $SRC monolingual data."; exit; fi
+## if ! [[ "$(wc -l < $TGT_RAW)" -eq "$N_MONO" ]]; then echo "ERROR: Number of lines doesn't match! Be sure you have $N_MONO sentences in your $TGT monolingual data."; exit; fi
 
 # tokenize data
 if ! [[ -f "$SRC_TOK" && -f "$TGT_TOK" ]]; then
@@ -224,8 +249,8 @@ echo "$TGT monolingual data truecased in: $TGT_TRUE"
 # learn language models
 if ! [[ -f "$SRC_LM_ARPA" && -f "$TGT_LM_ARPA" ]]; then
   echo "Learning language models..."
-  $TRAIN_LM -o 5 < $SRC_TRUE > $SRC_LM_ARPA
-  $TRAIN_LM -o 5 < $TGT_TRUE > $TGT_LM_ARPA
+  $TRAIN_LM -o 5 -S 8G -T $tmp < $SRC_TRUE > $SRC_LM_ARPA
+  $TRAIN_LM -o 5 -S 8G -T $tmp < $TGT_TRUE > $TGT_LM_ARPA
 fi
 echo "$SRC language model in: $SRC_LM_ARPA"
 echo "$TGT language model in: $TGT_LM_ARPA"
@@ -246,46 +271,46 @@ echo "$TGT binarized language model in: $TGT_LM_BLM"
 
 cd $PARA_PATH
 
-echo "Downloading parallel data..."
-wget -c http://data.statmt.org/wmt17/translation-task/dev.tgz
-
-echo "Extracting parallel data..."
-tar -xzf dev.tgz
-
-# check valid and test files are here
-if ! [[ -f "$SRC_VALID.sgm" ]]; then echo "$SRC_VALID.sgm is not found!"; exit; fi
-if ! [[ -f "$TGT_VALID.sgm" ]]; then echo "$TGT_VALID.sgm is not found!"; exit; fi
-if ! [[ -f "$SRC_TEST.sgm" ]]; then echo "$SRC_TEST.sgm is not found!"; exit; fi
-if ! [[ -f "$TGT_TEST.sgm" ]]; then echo "$TGT_TEST.sgm is not found!"; exit; fi
-
-echo "Tokenizing valid and test data..."
-$INPUT_FROM_SGM < $SRC_VALID.sgm | $NORM_PUNC -l $SRC | $REM_NON_PRINT_CHAR | $TOKENIZER -l $SRC -no-escape -threads $N_THREADS > $SRC_VALID.tok
-$INPUT_FROM_SGM < $TGT_VALID.sgm | $NORM_PUNC -l $TGT | $REM_NON_PRINT_CHAR | $TOKENIZER -l $TGT -no-escape -threads $N_THREADS > $TGT_VALID.tok
-$INPUT_FROM_SGM < $SRC_TEST.sgm | $NORM_PUNC -l $SRC | $REM_NON_PRINT_CHAR | $TOKENIZER -l $SRC -no-escape -threads $N_THREADS > $SRC_TEST.tok
-$INPUT_FROM_SGM < $TGT_TEST.sgm | $NORM_PUNC -l $TGT | $REM_NON_PRINT_CHAR | $TOKENIZER -l $TGT -no-escape -threads $N_THREADS > $TGT_TEST.tok
-
-echo "Truecasing valid and test data..."
-$TRUECASER --model $SRC_TRUECASER < $SRC_VALID.tok > $SRC_VALID.true
-$TRUECASER --model $TGT_TRUECASER < $TGT_VALID.tok > $TGT_VALID.true
-$TRUECASER --model $SRC_TRUECASER < $SRC_TEST.tok > $SRC_TEST.true
-$TRUECASER --model $TGT_TRUECASER < $TGT_TEST.tok > $TGT_TEST.true
+## echo "Downloading parallel data..."
+## wget -c http://data.statmt.org/wmt17/translation-task/dev.tgz
+## 
+## echo "Extracting parallel data..."
+## tar -xzf dev.tgz
+## 
+## # check valid and test files are here
+## if ! [[ -f "$SRC_VALID.sgm" ]]; then echo "$SRC_VALID.sgm is not found!"; exit; fi
+## if ! [[ -f "$TGT_VALID.sgm" ]]; then echo "$TGT_VALID.sgm is not found!"; exit; fi
+## if ! [[ -f "$SRC_TEST.sgm" ]]; then echo "$SRC_TEST.sgm is not found!"; exit; fi
+## if ! [[ -f "$TGT_TEST.sgm" ]]; then echo "$TGT_TEST.sgm is not found!"; exit; fi
+## 
+## echo "Tokenizing valid and test data..."
+## $INPUT_FROM_SGM < $SRC_VALID.sgm | $NORM_PUNC -l $SRC | $REM_NON_PRINT_CHAR | $TOKENIZER -l $SRC -no-escape -threads $N_THREADS > $SRC_VALID.tok
+## $INPUT_FROM_SGM < $TGT_VALID.sgm | $NORM_PUNC -l $TGT | $REM_NON_PRINT_CHAR | $TOKENIZER -l $TGT -no-escape -threads $N_THREADS > $TGT_VALID.tok
+## $INPUT_FROM_SGM < $SRC_TEST.sgm | $NORM_PUNC -l $SRC | $REM_NON_PRINT_CHAR | $TOKENIZER -l $SRC -no-escape -threads $N_THREADS > $SRC_TEST.tok
+## $INPUT_FROM_SGM < $TGT_TEST.sgm | $NORM_PUNC -l $TGT | $REM_NON_PRINT_CHAR | $TOKENIZER -l $TGT -no-escape -threads $N_THREADS > $TGT_TEST.tok
+## 
+## echo "Truecasing valid and test data..."
+## $TRUECASER --model $SRC_TRUECASER < $SRC_VALID.tok > $SRC_VALID.true
+## $TRUECASER --model $TGT_TRUECASER < $TGT_VALID.tok > $TGT_VALID.true
+## $TRUECASER --model $SRC_TRUECASER < $SRC_TEST.tok > $SRC_TEST.true
+## $TRUECASER --model $TGT_TRUECASER < $TGT_TEST.tok > $TGT_TEST.true
 
 
 #
 # Running MUSE to generate cross-lingual embeddings
 #
 
-ALIGNED_EMBEDDINGS_SRC=$MUSE_PATH/alignments/wiki-released-$SRC$TGT-identical_char/vectors-$SRC.pth
-ALIGNED_EMBEDDINGS_TGT=$MUSE_PATH/alignments/wiki-released-$SRC$TGT-identical_char/vectors-$TGT.pth
+ALIGNED_EMBEDDINGS_SRC=$MUSE_PATH/alignments/$EXP_NUM/vectors-$SRC.pth
+ALIGNED_EMBEDDINGS_TGT=$MUSE_PATH/alignments/$EXP_NUM/vectors-$TGT.pth
 
 if ! [[ -f "$ALIGNED_EMBEDDINGS_SRC" && -f "$ALIGNED_EMBEDDINGS_TGT" ]]; then
-  rm -rf $MUSE_PATH/alignments/
+  rm -rf $MUSE_PATH/alignments/$EXP_NUM
   echo "Aligning embeddings with MUSE..."
   python $MUSE_PATH/supervised.py --src_lang $SRC --tgt_lang $TGT \
-  --exp_path $MUSE_PATH --exp_name alignments --exp_id wiki-released-$SRC$TGT-identical_char \
+  --exp_path $MUSE_PATH --exp_name alignments --exp_id $EXP_ID \
   --src_emb $EMB_SRC \
   --tgt_emb $EMB_TGT \
-  --n_refinement 5 --dico_train identical_char --export "pth"
+  --n_refinement 5 --dico_train default --export "pth"
 fi
 echo "$SRC aligned embeddings: $ALIGNED_EMBEDDINGS_SRC"
 echo "$TGT aligned embeddings: $ALIGNED_EMBEDDINGS_TGT"
@@ -295,7 +320,7 @@ echo "$TGT aligned embeddings: $ALIGNED_EMBEDDINGS_TGT"
 # Generating a phrase-table in an unsupervised way
 #
 
-PHRASE_TABLE_PATH=$MUSE_PATH/alignments/wiki-released-$SRC$TGT-identical_char/phrase-table.$SRC-$TGT.gz
+PHRASE_TABLE_PATH=$MUSE_PATH/alignments/$EXP_NUM/phrase-table.$SRC-$TGT.gz
 if ! [[ -f "$PHRASE_TABLE_PATH" ]]; then
   echo "Generating unsupervised phrase-table"
   python $UMT_PATH/create-phrase-table.py \

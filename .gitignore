@@ -117,4 +117,17 @@ Session.vim
 # auto-generated tag files
 tags
 
+### project-specific stuff ###
+# data
+NMT/data/
+PBSMT/data/
+# experiments
+NMT/dumped/
+PBSMT/moses_train*
+# tools
+NMT/tools/
+PBSMT/MUSE/
+# tracking
+.history_clsp.local.*
+
 # End of https://www.gitignore.io/api/vim,python
