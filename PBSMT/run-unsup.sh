@@ -22,70 +22,6 @@ else
 	echo 'Running experiment #' $stage
 fi
 
-
-EXP_ID=$stage
-if [ $stage -eq 0 ]; then
-        EN_EMB_NAME=cc.en.300.vec
-        FR_EMB_NAME=cc.fr.300.vec
-	EN_EMB_ZIP=cc.en.300.vec.gz
-	FR_EMB_ZIP=cc.fr.300.vec.gz
-	EMB_LOCATION=https://dl.fbaipublicfiles.com/fasttext/vectors-crawl/
-
-	DICO_TYPE=identical_char
-	MUSE_ALGO=supervised
-fi
-if [ $stage -eq 1 ]; then
-        EN_EMB_NAME=cc.en.300.vec
-        FR_EMB_NAME=cc.fr.300.vec
-	EN_EMB_ZIP=cc.en.300.vec.gz
-	FR_EMB_ZIP=cc.fr.300.vec.gz
-	EMB_LOCATION=https://dl.fbaipublicfiles.com/fasttext/vectors-crawl/
-
-	DICO_TYPE=default
-	MUSE_ALGO=supervised
-fi
-if [ $stage -eq 2 ]; then
-        EN_EMB_NAME=cc.en.300.vec
-        FR_EMB_NAME=cc.fr.300.vec
-	EN_EMB_ZIP=cc.en.300.vec.gz
-	FR_EMB_ZIP=cc.fr.300.vec.gz
-	EMB_LOCATION=https://dl.fbaipublicfiles.com/fasttext/vectors-crawl/
-
-	MUSE_ALGO=unsupervised
-fi
-if [ $stage -eq 3 ]; then
-        EN_EMB_NAME=wiki.en.vec
-        FR_EMB_NAME=wiki.fr.vec
-	EN_EMB_ZIP=wiki.en.zip
-	FR_EMB_ZIP=wiki.fr.zip
-	EMB_LOCATION=https://dl.fbaipublicfiles.com/fasttext/vectors-wiki/
-
-	DICO_TYPE=identical_char
-	MUSE_ALGO=supervised
-fi
-if [ $stage -eq 4 ]; then
-        EN_EMB_NAME=wiki.en.vec
-        FR_EMB_NAME=wiki.fr.vec
-	EN_EMB_ZIP=wiki.en.zip
-	FR_EMB_ZIP=wiki.fr.zip
-	EMB_LOCATION=https://dl.fbaipublicfiles.com/fasttext/vectors-wiki/
-
-	DICO_TYPE=default
-	MUSE_ALGO=supervised
-fi
-if [ $stage -eq 5 ]; then
-        EN_EMB_NAME=wiki.en.vec
-        FR_EMB_NAME=wiki.fr.vec
-	EN_EMB_ZIP=wiki.en.zip
-	FR_EMB_ZIP=wiki.fr.zip
-	EMB_LOCATION=https://dl.fbaipublicfiles.com/fasttext/vectors-wiki/
-
-	MUSE_ALGO=unsupervised
-fi
-
-
-
-
 #
 # Data preprocessing configuration
 #
@@ -153,6 +89,7 @@ TGT_LM_BLM=$DATA_PATH/$TGT.lm.blm
 #
 # Experimental Setup.
 #
+EXP_ID=$stage
 # training directory
 TRAIN_DIR=$PWD/moses_train_$SRC-$TGT/$EXP_ID
 
@@ -199,28 +136,28 @@ echo "MUSE found in: $MUSE_PATH"
 
 cd $EMB_PATH
 
-if [ ! -f "$EN_EMB_ZIP" ]; then
+if [ ! -f "cc.en.300.vec.gz" ]; then
   echo "Downloading $SRC pretrained embeddings..."
-  wget -c "$EMB_LOCATION/$EN_EMB_ZIP"
+  wget -c "https://dl.fbaipublicfiles.com/fasttext/vectors-crawl/cc.en.300.vec.gz"
 fi
-if [ ! -f "$FR_EMB_ZIP" ]; then
+if [ ! -f "cc.fr.300.vec.gz" ]; then
   echo "Downloading $TGT pretrained embeddings..."
-  wget -c "$EMB_LOCATION/$FR_EMB_ZIP"
+  wget -c "https://dl.fbaipublicfiles.com/fasttext/vectors-crawl/cc.fr.300.vec.gz"
 fi
 
-if [ ! -f "$EN_EMB_NAME" ]; then
+if [ ! -f "cc.en.300.vec" ]; then
   echo "Decompressing English pretrained embeddings..."
-  gunzip -k $EN_EMB_ZIP 
+  gunzip -k cc.en.300.vec.gz
 fi
-if [ ! -f "$FR_EMB_NAME" ]; then
+if [ ! -f "cc.fr.300.vec" ]; then
   echo "Decompressing French pretrained embeddings..."
-  gunzip -k $FR_EMB_ZIP
+  gunzip -k cc.fr.300.vec.gz
 fi
 
-if [ "$SRC" == "en" ]; then EMB_SRC=$EMB_PATH/$EN_EMB_NAME; fi
-if [ "$SRC" == "fr" ]; then EMB_SRC=$EMB_PATH/$FR_EMB_NAME; fi
-if [ "$TGT" == "en" ]; then EMB_TGT=$EMB_PATH/$EN_EMB_NAME; fi
-if [ "$TGT" == "fr" ]; then EMB_TGT=$EMB_PATH/$FR_EMB_NAME; fi
+if [ "$SRC" == "en" ]; then EMB_SRC=$EMB_PATH/cc.en.300.vec; fi
+if [ "$SRC" == "fr" ]; then EMB_SRC=$EMB_PATH/cc.fr.300.vec; fi
+if [ "$TGT" == "en" ]; then EMB_TGT=$EMB_PATH/cc.en.300.vec; fi
+if [ "$TGT" == "fr" ]; then EMB_TGT=$EMB_PATH/cc.fr.300.vec; fi
 
 echo "Pretrained $SRC embeddings found in: $EMB_SRC"
 echo "Pretrained $TGT embeddings found in: $EMB_TGT"
@@ -366,23 +303,15 @@ cd $PARA_PATH
 ALIGNED_EMBEDDINGS_SRC=$MUSE_PATH/alignments/$EXP_ID/vectors-$SRC.pth
 ALIGNED_EMBEDDINGS_TGT=$MUSE_PATH/alignments/$EXP_ID/vectors-$TGT.pth
 
-
-# Note, --dico_train is ignored during unsupervised training (unsupervised.py)
 if ! [[ -f "$ALIGNED_EMBEDDINGS_SRC" && -f "$ALIGNED_EMBEDDINGS_TGT" ]]; then
   rm -rf $MUSE_PATH/alignments/$EXP_ID
   echo "Aligning embeddings with MUSE..."
-  if [ $MUSE_ALGO == 'supervised' ]; then
-	  # https://stackoverflow.com/questions/28678505/add-command-arguments-using-inline-if-statement-in-bash/28678587#28678587
-	  args=()
-	  args+=( '--dico_train $DICO_TYPE' )
-  fi
-  python $MUSE_PATH/$MUSE_ALGO.py --src_lang $SRC --tgt_lang $TGT \
+  python $MUSE_PATH/unsupervised.py --src_lang $SRC --tgt_lang $TGT \
   --exp_path $MUSE_PATH --exp_name alignments --exp_id $EXP_ID \
   --src_emb $EMB_SRC \
   --tgt_emb $EMB_TGT \
-  --n_refinement 5 --export "pth" "${args[@]}" 
+  --n_refinement 5 --export "pth"
 fi
-
 echo "$SRC aligned embeddings: $ALIGNED_EMBEDDINGS_SRC"
 echo "$TGT aligned embeddings: $ALIGNED_EMBEDDINGS_TGT"
 

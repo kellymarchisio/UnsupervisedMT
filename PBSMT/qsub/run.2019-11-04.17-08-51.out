@@ -1,0 +1,33 @@
+You are running on machine: c20
+Here is what free-gpu returned: 2
+GPU is 2
+CUDA_VISIBLE_DEVICES is 2
+5
+Running experiment # 5
+MOSES_PATH:  /home/pkoehn/moses
+MUSE found in: /export/c03/kmarc/unsup/UnsupervisedMT/PBSMT/MUSE
+Pretrained en embeddings found in: /export/c03/kmarc/unsup/UnsupervisedMT/PBSMT/data/embeddings/wiki.en.vec
+Pretrained fr embeddings found in: /export/c03/kmarc/unsup/UnsupervisedMT/PBSMT/data/embeddings/wiki.fr.vec
+Downloading English files...
+Downloading French files...
+news.2007.en.shuffled already decompressed.
+news.2007.fr.shuffled already decompressed.
+news.2008.en.shuffled already decompressed.
+news.2008.fr.shuffled already decompressed.
+news.2009.en.shuffled already decompressed.
+news.2009.fr.shuffled already decompressed.
+news.2010.en.shuffled already decompressed.
+news.2010.fr.shuffled already decompressed.
+en monolingual data concatenated in: /export/c03/kmarc/unsup/UnsupervisedMT/PBSMT/data/mono/all.en
+fr monolingual data concatenated in: /export/c03/kmarc/unsup/UnsupervisedMT/PBSMT/data/mono/all.fr
+en monolingual data tokenized in: /export/c03/kmarc/unsup/UnsupervisedMT/PBSMT/data/mono/all.en.tok
+fr monolingual data tokenized in: /export/c03/kmarc/unsup/UnsupervisedMT/PBSMT/data/mono/all.fr.tok
+en truecaser in: /export/c03/kmarc/unsup/UnsupervisedMT/PBSMT/data/en.truecaser
+fr truecaser in: /export/c03/kmarc/unsup/UnsupervisedMT/PBSMT/data/fr.truecaser
+en monolingual data truecased in: /export/c03/kmarc/unsup/UnsupervisedMT/PBSMT/data/mono/all.en.true
+fr monolingual data truecased in: /export/c03/kmarc/unsup/UnsupervisedMT/PBSMT/data/mono/all.fr.true
+en language model in: /export/c03/kmarc/unsup/UnsupervisedMT/PBSMT/data/en.lm.arpa
+fr language model in: /export/c03/kmarc/unsup/UnsupervisedMT/PBSMT/data/fr.lm.arpa
+en binarized language model in: /export/c03/kmarc/unsup/UnsupervisedMT/PBSMT/data/en.lm.blm
+fr binarized language model in: /export/c03/kmarc/unsup/UnsupervisedMT/PBSMT/data/fr.lm.blm
+Aligning embeddings with MUSE...

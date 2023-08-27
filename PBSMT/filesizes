@@ -1,0 +1,11 @@
+0	local-settings.sh
+4.0K	qsub-run.sh
+8.0K	create-phrase-table.py
+16K	run-original.sh
+16K	run.sh
+16K	run-unsup.sh
+52K	src
+2.4M	qsub
+5.8M	moses_train_en-fr
+37G	MUSE
+111G	data

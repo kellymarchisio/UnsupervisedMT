@@ -1,0 +1,4 @@
+You are running on machine: c19
+Here is what free-gpu returned: 3
+GPU is 3
+CUDA_VISIBLE_DEVICES is 3

@@ -1,0 +1,76 @@
+You are running on machine: c08
+Here is what free-gpu returned: 1
+GPU is 1
+CUDA_VISIBLE_DEVICES is 1
+4
+Running experiment # 4
+MOSES_PATH:  /home/pkoehn/moses
+MUSE found in: /export/c03/kmarc/unsup/UnsupervisedMT/PBSMT/MUSE
+Pretrained en embeddings found in: /export/c03/kmarc/unsup/UnsupervisedMT/PBSMT/data/embeddings/wiki.en.vec
+Pretrained fr embeddings found in: /export/c03/kmarc/unsup/UnsupervisedMT/PBSMT/data/embeddings/wiki.fr.vec
+Downloading English files...
+Downloading French files...
+news.2007.en.shuffled already decompressed.
+news.2007.fr.shuffled already decompressed.
+news.2008.en.shuffled already decompressed.
+news.2008.fr.shuffled already decompressed.
+news.2009.en.shuffled already decompressed.
+news.2009.fr.shuffled already decompressed.
+news.2010.en.shuffled already decompressed.
+news.2010.fr.shuffled already decompressed.
+en monolingual data concatenated in: /export/c03/kmarc/unsup/UnsupervisedMT/PBSMT/data/mono/all.en
+fr monolingual data concatenated in: /export/c03/kmarc/unsup/UnsupervisedMT/PBSMT/data/mono/all.fr
+en monolingual data tokenized in: /export/c03/kmarc/unsup/UnsupervisedMT/PBSMT/data/mono/all.en.tok
+fr monolingual data tokenized in: /export/c03/kmarc/unsup/UnsupervisedMT/PBSMT/data/mono/all.fr.tok
+en truecaser in: /export/c03/kmarc/unsup/UnsupervisedMT/PBSMT/data/en.truecaser
+fr truecaser in: /export/c03/kmarc/unsup/UnsupervisedMT/PBSMT/data/fr.truecaser
+en monolingual data truecased in: /export/c03/kmarc/unsup/UnsupervisedMT/PBSMT/data/mono/all.en.true
+fr monolingual data truecased in: /export/c03/kmarc/unsup/UnsupervisedMT/PBSMT/data/mono/all.fr.true
+en language model in: /export/c03/kmarc/unsup/UnsupervisedMT/PBSMT/data/en.lm.arpa
+fr language model in: /export/c03/kmarc/unsup/UnsupervisedMT/PBSMT/data/fr.lm.arpa
+en binarized language model in: /export/c03/kmarc/unsup/UnsupervisedMT/PBSMT/data/en.lm.blm
+fr binarized language model in: /export/c03/kmarc/unsup/UnsupervisedMT/PBSMT/data/fr.lm.blm
+Aligning embeddings with MUSE...
+path should be: /export/c03/kmarc/unsup/UnsupervisedMT/PBSMT/MUSE/src/evaluation/../../data/crosslingual/dictionaries/en-fr.0-5000.txt
+path should be: /export/c03/kmarc/unsup/UnsupervisedMT/PBSMT/MUSE/src/evaluation/../../data/crosslingual/dictionaries/en-fr.5000-6500.txt
+path should be: /export/c03/kmarc/unsup/UnsupervisedMT/PBSMT/MUSE/src/evaluation/../../data/crosslingual/dictionaries/en-fr.5000-6500.txt
+path should be: /export/c03/kmarc/unsup/UnsupervisedMT/PBSMT/MUSE/src/evaluation/../../data/crosslingual/dictionaries/en-fr.5000-6500.txt
+path should be: /export/c03/kmarc/unsup/UnsupervisedMT/PBSMT/MUSE/src/evaluation/../../data/crosslingual/dictionaries/en-fr.5000-6500.txt
+path should be: /export/c03/kmarc/unsup/UnsupervisedMT/PBSMT/MUSE/src/evaluation/../../data/crosslingual/dictionaries/en-fr.5000-6500.txt
+path should be: /export/c03/kmarc/unsup/UnsupervisedMT/PBSMT/MUSE/src/evaluation/../../data/crosslingual/dictionaries/en-fr.5000-6500.txt
+path should be: /export/c03/kmarc/unsup/UnsupervisedMT/PBSMT/MUSE/src/evaluation/../../data/crosslingual/dictionaries/en-fr.5000-6500.txt
+path should be: /export/c03/kmarc/unsup/UnsupervisedMT/PBSMT/MUSE/src/evaluation/../../data/crosslingual/dictionaries/en-fr.5000-6500.txt
+path should be: /export/c03/kmarc/unsup/UnsupervisedMT/PBSMT/MUSE/src/evaluation/../../data/crosslingual/dictionaries/en-fr.5000-6500.txt
+path should be: /export/c03/kmarc/unsup/UnsupervisedMT/PBSMT/MUSE/src/evaluation/../../data/crosslingual/dictionaries/en-fr.5000-6500.txt
+path should be: /export/c03/kmarc/unsup/UnsupervisedMT/PBSMT/MUSE/src/evaluation/../../data/crosslingual/dictionaries/en-fr.5000-6500.txt
+path should be: /export/c03/kmarc/unsup/UnsupervisedMT/PBSMT/MUSE/src/evaluation/../../data/crosslingual/dictionaries/en-fr.5000-6500.txt
+en aligned embeddings: /export/c03/kmarc/unsup/UnsupervisedMT/PBSMT/MUSE/alignments/4/vectors-en.pth
+fr aligned embeddings: /export/c03/kmarc/unsup/UnsupervisedMT/PBSMT/MUSE/alignments/4/vectors-fr.pth
+Generating unsupervised phrase-table
+Loading embeddings ...
+Loaded 2519370 pre-trained word embeddings.
+Loaded 1152449 pre-trained word embeddings.
+Loaded 300000 / 300000 source / target embeddings.
+Computing average distance ...
+0... 12800... 25600... 38400... 51200... 64000... 76800... 89600... 102400... 115200... 128000... 140800... 153600... 166400... 179200... 192000... 204800... 217600... 230400... 243200... 256000... 268800... 281600... 294400... 
+0... 12800... 25600... 38400... 51200... 64000... 76800... 89600... 102400... 115200... 128000... 140800... 153600... 166400... 179200... 192000... 204800... 217600... 230400... 243200... 256000... 268800... 281600... 294400... 
+Generating translations ...
+0... 12800... 25600... 38400... 51200... 64000... 76800... 89600... 102400... 115200... 128000... 140800... 153600... 166400... 179200... 192000... 204800... 217600... 230400... 243200... 256000... 268800... 281600... 294400... 
+0... 12800... 25600... 38400... 51200... 64000... 76800... 89600... 102400... 115200... 128000... 140800... 153600... 166400... 179200... 192000... 204800... 217600... 230400... 243200... 256000... 268800... 281600... 294400... 
+Generating scores ...
+0... 12800... 25600... 38400... 51200... 64000... 76800... 89600... 102400... 115200... 128000... 140800... 153600... 166400... 179200... 192000... 204800... 217600... 230400... 243200... 256000... 268800... 281600... 294400... 
+0... 12800... 25600... 38400... 51200... 64000... 76800... 89600... 102400... 115200... 128000... 140800... 153600... 166400... 179200... 192000... 204800... 217600... 230400... 243200... 256000... 268800... 281600... 294400... 
+Writing the phrase table to /export/c03/kmarc/unsup/UnsupervisedMT/PBSMT/MUSE/alignments/4/phrase-table.en-fr ...
+0... 50000... 100000... 150000... 200000... 250000... 
+Found 16911467 translations for 300000 words. 485 words did not get assigned any translation. 0 pairs were skipped because of low probability.
+Gzip phrase table ...
+Phrase-table location: /export/c03/kmarc/unsup/UnsupervisedMT/PBSMT/MUSE/alignments/4/phrase-table.en-fr.gz
+Generating Moses configuration in: /export/c03/kmarc/unsup/UnsupervisedMT/PBSMT/moses_train_en-fr/4
+Creating default configuration file...
+Removing lexical reordering features ...
+Linking phrase-table path...
+Translating test sentences...
+Detruecasing hypothesis...
+Evaluating translations...
+BLEU = 11.61, 49.3/18.6/8.5/4.1 (BP=0.869, ratio=0.877, hyp_len=71132, ref_len=81098)
+End of training. Experiment is stored in: /export/c03/kmarc/unsup/UnsupervisedMT/PBSMT/moses_train_en-fr/4
