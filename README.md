@@ -8,6 +8,10 @@ This repository contains the original implementation of the unsupervised PBSMT a
 ### This repository (and README) has been altered by Kelly Marchisio for use on
 ### 	the JHU CLSP Grid - October, 2019.
 ###
+### Update, 26 Aug 2023: TI never really did anything with this repo besides
+### 	play with it for a few weeks during the second year of my PhD.  
+### 	Deleting it from the CLSP grid.
+###
 ###############################################################################
 
 ### Note: for the NMT approach, we recommend you have a look at [Cross-lingual Language Model Pretraining](https://arxiv.org/abs/1901.07291) and the associated GitHub repository https://github.com/facebookresearch/XLM which contains a better model and a more efficient implementation of unsupervised machine translation.
